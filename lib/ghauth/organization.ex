@@ -26,6 +26,8 @@ defmodule Ghauth.Organization do
 
   @doc false
   @spec match?(t, User.t(), Client.t()) :: boolean
+  def match?(nil, _user, _client), do: false
+
   def match?(%__MODULE__{login: orgname}, %User{} = user, client) do
     user
     |> User.fetch_orgs(client)
@@ -36,13 +38,13 @@ defmodule Ghauth.Organization do
 
   @doc false
   @spec fetch_teams(t, Client.t()) :: t
-  def fetch_teams(%__MODULE__{teams: nil, login: name} = user, client) do
+  def fetch_teams(%__MODULE__{teams: nil, login: name} = org, client) do
     teams =
       name
       |> Client.org_teams(client)
       |> Enum.map(&{&1["name"], Team.new(&1["id"], &1["name"])})
 
-    %{user | teams: teams}
+    %{org | teams: teams}
   end
 
   def fetch_teams(org, _client), do: org

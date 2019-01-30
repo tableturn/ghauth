@@ -34,7 +34,7 @@ defmodule Ghauth.Acl do
     if Organization.match?(org, user, client) do
       match_teams?(org, teams, user, rest, client)
     else
-      false
+      match?(user, rest, client)
     end
   end
 

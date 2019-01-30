@@ -22,7 +22,9 @@ defmodule Ghauth.Team do
 
   @doc false
   @spec match?(t, User.t(), Client.t()) :: boolean
-  def match?(team, %User{login: username}, client) do
+  def match?(nil, _user, _client), do: false
+
+  def match?(%__MODULE__{} = team, %User{login: username}, client) do
     team
     |> fetch_members(client)
     |> Map.get(:members)
