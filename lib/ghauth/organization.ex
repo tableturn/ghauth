@@ -42,7 +42,7 @@ defmodule Ghauth.Organization do
     teams =
       name
       |> Client.org_teams(client)
-      |> Enum.map(&{&1["name"], Team.new(&1["id"], &1["name"])})
+      |> Enum.reduce(%{}, &Map.put(&2, &1["name"], Team.new(&1["id"], &1["name"])))
 
     %{org | teams: teams}
   end
